@@ -11,18 +11,6 @@ A modern, responsive IoT dashboard built with Angular 17+ for monitoring and man
 - **Device Status**: Real-time device connectivity and battery status
 - **Responsive Design**: Optimized for mobile, tablet, and desktop
 
-### 🌱 Device Management
-- **CRUD Operations**: Add, edit, delete, and manage IoT devices
-- **Device Types**: Support for sensors, actuators, and controllers
-- **Status Monitoring**: Track online/offline/maintenance status
-- **Search & Filtering**: Advanced device search and filtering capabilities
-- **Battery Monitoring**: Track device battery levels and health
-
-### 👤 User Profile
-- **Profile Management**: Edit personal information and farm details
-- **Preferences**: Customize temperature units, notifications, and alerts
-- **Security**: Change password functionality
-- **Role-based Access**: Support for different user roles (Admin, Farmer, Technician)
 
 ## 🛠️ Tech Stack
 
