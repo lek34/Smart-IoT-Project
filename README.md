@@ -166,37 +166,5 @@ npm install
 npx tailwindcss -i ./src/styles.css -o ./dist/output.css --watch
 ```
 
-**Component Not Loading**
-- Check that all components are properly imported
-- Verify routing configuration in `app.routes.ts`
-- Check browser console for errors
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Angular Team** for the amazing framework
-- **TailwindCSS** for the utility-first CSS framework
-- **Heroicons** for the beautiful SVG icons
-- **IoT Community** for inspiration and feedback
-
-## 📞 Support
-
-For support and questions:
-- Create an issue in the GitHub repository
-- Contact the development team
-- Check the documentation and examples
-
 ---
 
-**Built with ❤️ using Angular 17+ and modern web technologies**
