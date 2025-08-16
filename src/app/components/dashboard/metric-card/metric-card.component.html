@@ -1,0 +1,42 @@
+<div class="card border-2 hover:shadow-lg transition-all duration-200">
+  <div class="flex items-center justify-between">
+    <div class="flex-1">
+      <p class="text-sm font-medium text-gray-600 mb-1">{{ title }}</p>
+      <div class="flex items-baseline space-x-2">
+        <p class="text-3xl font-bold text-gray-900">{{ getFormattedValue() }}</p>
+        <p class="text-lg text-gray-500">{{ unit }}</p>
+      </div>
+    </div>
+    
+    <div class="flex flex-col items-end space-y-2">
+      <!-- Icon -->
+      <div class="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center">
+        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="getIconPath()"></path>
+        </svg>
+      </div>
+      
+      <!-- Trend Indicator -->
+      <div class="flex items-center space-x-1">
+        <svg class="w-4 h-4 {{ getTrendColor() }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="getTrendIcon()"></path>
+        </svg>
+        <span class="text-xs {{ getTrendColor() }} font-medium">
+          {{ trend === 'up' ? '+' : trend === 'down' ? '-' : '=' }}
+        </span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Progress bar for devices -->
+  <div *ngIf="total !== undefined" class="mt-4">
+    <div class="flex justify-between text-xs text-gray-500 mb-1">
+      <span>Online</span>
+      <span>{{ Math.round((value / total) * 100) }}%</span>
+    </div>
+    <div class="w-full bg-gray-200 rounded-full h-2">
+      <div class="bg-primary-600 h-2 rounded-full transition-all duration-300" 
+           [style.width.%]="(value / total) * 100"></div>
+    </div>
+  </div>
+</div>

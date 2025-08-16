@@ -1,0 +1,295 @@
+<div class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <div class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="py-6">
+                <h1 class="text-3xl font-bold text-gray-900">User Profile</h1>
+                <p class="text-gray-600 mt-1">Manage your account settings and preferences</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Error and Success Messages -->
+        <div *ngIf="error" class="mb-6">
+            <div class="bg-danger-50 border border-danger-200 rounded-lg p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-danger-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-3 flex-1">
+                        <p class="text-sm text-danger-700">{{ error }}</p>
+                    </div>
+                    <button (click)="clearError()" class="text-danger-400 hover:text-danger-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="success" class="mb-6">
+            <div class="bg-success-50 border border-success-200 rounded-lg p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-success-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM16.707 9.293a1 1 0 00-1.414-1.414L9 12.586l-2.293-2.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l6-6z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-3 flex-1">
+                        <p class="text-sm text-success-700">{{ success }}</p>
+                    </div>
+                    <button (click)="clearSuccess()" class="text-success-400 hover:text-success-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="loading" class="text-center py-12">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto"></div>
+            <p class="mt-2 text-sm text-gray-500">Loading profile...</p>
+        </div>
+
+        <!-- Profile Content -->
+        <div *ngIf="user && !loading" class="space-y-8">
+            <!-- Profile Information -->
+            <div class="card">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold text-gray-900">Profile Information</h2>
+                    <button *ngIf="!isEditingProfile" (click)="startEditingProfile()" class="btn-primary">
+                        Edit Profile
+                    </button>
+                </div>
+
+                <div *ngIf="!isEditingProfile" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                        <p class="text-gray-900">{{ user.firstName }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                        <p class="text-gray-900">{{ user.lastName }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <p class="text-gray-900">{{ user.email }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                        <p class="text-gray-900">{{ user.phone || 'Not provided' }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border" [ngClass]="getRoleColor(user.role)">
+                            {{ getRoleDisplayName(user.role) }}
+                        </span>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Member Since</label>
+                        <p class="text-gray-900">{{ user.createdAt | date:'mediumDate' }}</p>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Farm Name</label>
+                        <p class="text-gray-900">{{ user.farmName || 'Not provided' }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Farm Size (acres)</label>
+                        <p class="text-gray-900">{{ user.farmSize || 'Not specified' }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Farm Location</label>
+                        <p class="text-gray-900">{{ user.farmLocation || 'Not provided' }}</p>
+                    </div>
+                </div>
+
+                <!-- Edit Profile Form -->
+                <form *ngIf="isEditingProfile" [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                            <input type="text" formControlName="firstName" class="input">
+                            <div *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched" class="text-danger-600 text-xs mt-1">
+                                First name is required and must be at least 2 characters
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                            <input type="text" formControlName="lastName" class="input">
+                            <div *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched" class="text-danger-600 text-xs mt-1">
+                                Last name is required and must be at least 2 characters
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                            <input type="email" formControlName="email" class="input">
+                            <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" class="text-danger-600 text-xs mt-1">
+                                Please enter a valid email address
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                            <input type="tel" formControlName="phone" class="input">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Farm Name</label>
+                            <input type="text" formControlName="farmName" class="input">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Farm Size (acres)</label>
+                            <input type="number" formControlName="farmSize" class="input" min="0">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Farm Location</label>
+                            <input type="text" formControlName="farmLocation" class="input">
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-3 pt-4">
+                        <button type="submit" [disabled]="profileForm.invalid || loading" class="btn-primary">
+                            Save Changes
+                        </button>
+                        <button type="button" (click)="cancelProfileEdit()" class="btn-secondary">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Preferences -->
+            <div class="card">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold text-gray-900">Preferences</h2>
+                    <button *ngIf="!isEditingPreferences" (click)="startEditingPreferences()" class="btn-primary">
+                        Edit Preferences
+                    </button>
+                </div>
+
+                <div *ngIf="!isEditingPreferences" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Temperature Unit</label>
+                        <p class="text-gray-900">{{ user.preferences.temperatureUnit === 'celsius' ? 'Celsius (°C)' : 'Fahrenheit (°F)' }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Humidity Unit</label>
+                        <p class="text-gray-900">{{ user.preferences.humidityUnit === 'percentage' ? 'Percentage (%)' : user.preferences.humidityUnit }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Notifications</label>
+                        <p class="text-gray-900">{{ user.preferences.notifications ? 'Enabled' : 'Disabled' }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email Alerts</label>
+                        <p class="text-gray-900">{{ user.preferences.emailAlerts ? 'Enabled' : 'Disabled' }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">SMS Alerts</label>
+                        <p class="text-gray-900">{{ user.preferences.smsAlerts ? 'Enabled' : 'Disabled' }}</p>
+                    </div>
+                </div>
+
+                <!-- Edit Preferences Form -->
+                <form *ngIf="isEditingPreferences" [formGroup]="preferencesForm" (ngSubmit)="savePreferences()" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Temperature Unit</label>
+                            <select formControlName="temperatureUnit" class="input">
+                                <option value="celsius">Celsius (°C)</option>
+                                <option value="fahrenheit">Fahrenheit (°F)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Humidity Unit</label>
+                            <select formControlName="humidityUnit" class="input">
+                                <option value="percentage">Percentage (%)</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <div class="space-y-3">
+                                <div class="flex items-center">
+                                    <input type="checkbox" formControlName="notifications" class="h-4 w-4 text-primary-600 rounded border-gray-300">
+                                    <label class="ml-2 text-sm text-gray-700">Enable notifications</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" formControlName="emailAlerts" class="h-4 w-4 text-primary-600 rounded border-gray-300">
+                                    <label class="ml-2 text-sm text-gray-700">Email alerts</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" formControlName="smsAlerts" class="h-4 w-4 text-primary-600 rounded border-gray-300">
+                                    <label class="ml-2 text-sm text-gray-700">SMS alerts</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-3 pt-4">
+                        <button type="submit" [disabled]="preferencesForm.invalid || loading" class="btn-primary">
+                            Save Preferences
+                        </button>
+                        <button type="button" (click)="cancelPreferencesEdit()" class="btn-secondary">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Change Password -->
+            <div class="card">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold text-gray-900">Security</h2>
+                    <button *ngIf="!isChangingPassword" (click)="startChangingPassword()" class="btn-primary">
+                        Change Password
+                    </button>
+                </div>
+
+                <div *ngIf="!isChangingPassword">
+                    <p class="text-gray-600">Last updated: {{ user.updatedAt | date:'medium' }}</p>
+                </div>
+
+                <!-- Change Password Form -->
+                <form *ngIf="isChangingPassword" [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Current Password *</label>
+                        <input type="password" formControlName="currentPassword" class="input">
+                        <div *ngIf="passwordForm.get('currentPassword')?.invalid && passwordForm.get('currentPassword')?.touched" class="text-danger-600 text-xs mt-1">
+                            Current password is required
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">New Password *</label>
+                        <input type="password" formControlName="newPassword" class="input">
+                        <div *ngIf="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched" class="text-danger-600 text-xs mt-1">
+                            New password must be at least 8 characters
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password *</label>
+                        <input type="password" formControlName="confirmPassword" class="input">
+                        <div *ngIf="passwordForm.get('confirmPassword')?.invalid && passwordForm.get('confirmPassword')?.touched" class="text-danger-600 text-xs mt-1">
+                            Please confirm your new password
+                        </div>
+                        <div *ngIf="passwordForm.errors?.['passwordMismatch'] && passwordForm.get('confirmPassword')?.touched" class="text-danger-600 text-xs mt-1">
+                            Passwords do not match
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-3 pt-4">
+                        <button type="submit" [disabled]="passwordForm.invalid || loading" class="btn-primary">
+                            Change Password
+                        </button>
+                        <button type="button" (click)="cancelPasswordChange()" class="btn-secondary">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
