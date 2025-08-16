@@ -42,7 +42,7 @@ A modern, responsive IoT dashboard built with Angular 17+ for monitoring and man
 
 3. **Start the development server**
    ```bash
-   ng serve
+   ng serve or npx ng serve
    ```
 
 4. **Open your browser**
@@ -59,8 +59,6 @@ src/
 │   │   │   ├── sensor-chart/    # Interactive sensor data charts
 │   │   │   ├── alert-panel/     # Device alerts and notifications
 │   │   │   └── device-status/   # Device connectivity status
-│   │   ├── devices/             # Device management CRUD operations
-│   │   └── profile/             # User profile and preferences
 │   ├── models/                  # TypeScript interfaces and types
 │   ├── services/                # Business logic and data services
 │   ├── stores/                  # SignalStore for state management
